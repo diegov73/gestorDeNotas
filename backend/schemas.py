@@ -9,7 +9,7 @@ class NotaBase(BaseModel):
     fecha: Optional[date] = None
 
 class NotaCreate(NotaBase):
-    ID_evaluacion: int
+    id_evaluacion: int
 
 class NotaResponse(NotaBase):
     id_Nota: int
