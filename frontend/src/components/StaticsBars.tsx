@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import FloatWindowRamo from "./forms";
 
 const StaticsBars: React.FC = ()=>{
     const[isOpen, setIsOpen] = useState<boolean>(false);
@@ -35,6 +36,9 @@ const StaticsBars: React.FC = ()=>{
                     </nav>
                 </div>
             </div>
+            {WindowOpen &&(
+                <FloatWindowRamo onClose = {() => setWindowOpen(false)}/>
+            )}
         </div>
     )
 }
