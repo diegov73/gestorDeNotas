@@ -1,13 +1,13 @@
 
 import './App.css';
-import Navbar from './components/Navbar';
+
+import StaticsBars from './components/StaticsBars';
 
 function App() {
 
   return (
     <div>
-      <Navbar/>
-      <h1>hola mundo</h1>
+      <StaticsBars/>
     </div>
   )
 }
