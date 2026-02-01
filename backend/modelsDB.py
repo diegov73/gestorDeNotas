@@ -1,33 +1,40 @@
-from typing import Optional
+from typing import List, Optional
 from sqlalchemy import *
 from sqlalchemy.orm import *
 from dataBase import Base
 
 class Ramo(Base):
     __tablename__ = "ramos"
-    id_ramo: Mapped[int] = mapped_column(primary_key=True, index=True)
-    nombre: Mapped[str] = mapped_column(String(30))
-    evaluaciones: Mapped[list["Evaluacion"]] = relationship(back_populates="ramo")
 
-class Evaluacion(base):
+    id_ramo = Column(Integer, primary_key=True, index=True)
+    nombre = Column(String(30))
+    nota_aprobado = Column(Float)
+    nota_examen = Column(Float)
+   
+    evaluaciones = relationship("Evaluacion", back_populates="ramo")
+
+class Evaluacion(Base):
     __tablename__ = "evaluaciones"
-    id_evalucion: Mapped[int] = mapped_column(primary_key=True, Index=True)
-    nombre: Mapped[str] = mapped_column(String(30))
-    peso: Mapped[float] = mapped_column(float)
-    
-    id_ramo: Mapped[int] = mapped_column(ForeignKey("Ramo.id_ramo"))
 
-    ramo: Mapped["Ramo"] = relationship(back_populates="evaluacion")
-    notas: Mapped[list["Nota"]] = relationship(back_populates="evaluacion")
+    id_evaluacion = Column(Integer, primary_key=True, index=True)
+    nombre = Column(String(30))
+    peso = Column(Float)
+    cantidad_notas = Column(Integer)
 
-class Nota(base):
+    id_ramo = Column(Integer, ForeignKey("ramos.id_ramo"))
+
+    ramo = relationship("Ramo", back_populates="evaluaciones")
+    notas = relationship("Nota", back_populates="evaluacion")
+
+class Nota(Base):
     __tablename__ = "notas"
-    id_nota: Mapped[int] = mapped_column(primary_key=True, index=True)
-    nombre: Mapped[str] = mapped_column(String(30))
-    peso: Mapped[Optional[float]] = mapped_column(float)
-    nota: Mapped[DECIMAL] = mapped_column(DECIMAL)
-    fecha: Mapped[Optional[Date]] = mapped_column(Date)
+    
+    id_nota = Column(Integer, primary_key=True, index=True)
+    nombre = Column(String(30))
+    peso = Column(Float)
+    valor = Column(Float)
+    fecha = Column(Date)
 
-    id_evaluacion: Mapped[int] = mapped_column(ForeignKey(Evaluacion.id_evalucion))
+    id_evaluacion = Column(Integer, ForeignKey("evaluaciones.id_evaluacion"))
 
-    evaluacion: Mapped["Evaluacion"] = relationship(back_populates="notas")
+    evaluacion = relationship("Evaluacion", back_populates="notas")

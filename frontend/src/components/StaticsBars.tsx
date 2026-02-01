@@ -23,7 +23,7 @@ const StaticsBars: React.FC = ()=>{
             >
                 <div className="p-5">
                     <nav>
-                        <ul className="space-y-7">
+                        <ul className="space-y-8">
                             <li 
                                 onClick={()=>setWindowOpen(true)}
                                 className=" font-bold block text-center hover:text-black transition-colors">

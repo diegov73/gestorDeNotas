@@ -1,5 +1,5 @@
 #para iniciar el backend:
-#uvicorn backend.main:app --reload
+#uvicorn main:app --reload
 
 from typing import Optional, List
 from fastapi import FastAPI, HTTPException, Depends, status
@@ -8,7 +8,7 @@ from sqlalchemy import *
 from sqlalchemy.orm import *
 from dataBase import engine, get_db
 from pydantic import BaseModel
-from . import modelsDB, schemas
+import modelsDB, schemas
 
 modelsDB.Base.metadata.create_all(bind = engine)
 
@@ -34,10 +34,20 @@ def read_root():
 @app.post("/ramos/", response_model=schemas.RamoResponse, status_code=status.HTTP_201_CREATED)
 def create_ramo(ramo: schemas.RamoCreate, db: Session = Depends(get_db)):
     
-    ramoDB = modelsDB.Ramo(nombre=ramo.nombre)
+    print("POST")
+    print(f"{ramo.nombre} se esta creando")
+
+    ramoDB = modelsDB.Ramo(
+        nombre=ramo.nombre,
+        nota_aprobado = ramo.nota_aprobado,
+        nota_examen = ramo.nota_examen
+        )
+    
     db.add(ramoDB)
     db.commit()
     db.refresh(ramoDB)
+
+    print(f"{ramo.nombre} se creo con exito")
     return ramoDB
 
 @app.get("/ramos/", response_model=List[schemas.RamoResponse], status_code=status.HTTP_200_OK)
@@ -65,7 +75,7 @@ def update_ramo(id_ramo: int, ramo_update: schemas.RamoUpdate, db: Session = Dep
     return ramoDB
 
 @app.delete("/ramo/{id_ramo}", status_code=status.HTTP_204_NO_CONTENT)
-def delete_ramo(id_ramo: int, db: Session Depends(get_db)):
+def delete_ramo(id_ramo: int, db: Session = Depends(get_db)):
     ramoDB = db.query(modelsDB.Ramo).filter(modelsDB.Ramo.id_ramo == id_ramo).first()
 
     if ramoDB is None:
@@ -74,3 +84,8 @@ def delete_ramo(id_ramo: int, db: Session Depends(get_db)):
     db.delete(ramoDB)
     db.commit()
     return None
+
+if __name__ == "__main__":
+    import uvicorn
+    # Esto permite correr el archivo directamente con "python main.py"
+    uvicorn.run("main:app", host="127.0.0.1", port=8000, reload=True)

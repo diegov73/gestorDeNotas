@@ -1,7 +1,9 @@
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker, declarative_base
 
-DB = "postgresql://postgres:1234@localhost/gestorDeNotas"
+DB = "postgresql+psycopg2://postgres:1234@localhost/GestorDeNotas"
+
+Base = declarative_base()
 
 engine = create_engine(DB)
 

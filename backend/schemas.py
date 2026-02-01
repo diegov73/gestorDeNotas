@@ -12,7 +12,7 @@ class NotaCreate(NotaBase):
     id_evaluacion: int
 
 class NotaResponse(NotaBase):
-    id_Nota: int
+    id_nota: int
     id_evaluacion: int
 
     class Config:
@@ -36,7 +36,9 @@ class EvaluacionResponse(EvaluacionBase):
 #RAMOS
 class RamoBase(BaseModel):
     nombre: str
-
+    nota_aprobado: float = 4.0
+    nota_examen: float = 5.0
+    
 class RamoCreate(RamoBase):
     pass
 
