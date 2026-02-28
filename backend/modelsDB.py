@@ -2,26 +2,29 @@ from typing import List, Optional
 from sqlalchemy import *
 from sqlalchemy.orm import *
 from dataBase import Base
+import uuid
 
 class Ramo(Base):
     __tablename__ = "ramos"
 
-    id_ramo = Column(Integer, primary_key=True, index=True)
+    id_ramo = Column(String, primary_key=True, index=True, default=lambda: str(uuid.uuid4()))
     nombre = Column(String(30))
     nota_aprobado = Column(Float)
     nota_examen = Column(Float)
+    color = Column(String, default="#24731d")
    
     evaluaciones = relationship("Evaluacion", back_populates="ramo")
 
 class Evaluacion(Base):
     __tablename__ = "evaluaciones"
 
-    id_evaluacion = Column(Integer, primary_key=True, index=True)
+    id_evaluacion = Column(String, primary_key=True, index=True, default=lambda: str(uuid.uuid4()))
     nombre = Column(String(30))
     peso = Column(Float)
     cantidad_notas = Column(Integer)
+    color = Column(String, default="#24731d")
 
-    id_ramo = Column(Integer, ForeignKey("ramos.id_ramo"))
+    id_ramo = Column(String, ForeignKey("ramos.id_ramo"))
 
     ramo = relationship("Ramo", back_populates="evaluaciones")
     notas = relationship("Nota", back_populates="evaluacion")
@@ -29,12 +32,13 @@ class Evaluacion(Base):
 class Nota(Base):
     __tablename__ = "notas"
     
-    id_nota = Column(Integer, primary_key=True, index=True)
+    id_nota = Column(String, primary_key=True, index=True, default=lambda: str(uuid.uuid4()))
     nombre = Column(String(30))
     peso = Column(Float)
     valor = Column(Float)
     fecha = Column(Date)
+    color = Column(String, default="#24731d")
 
-    id_evaluacion = Column(Integer, ForeignKey("evaluaciones.id_evaluacion"))
+    id_evaluacion = Column(String, ForeignKey("evaluaciones.id_evaluacion"))
 
     evaluacion = relationship("Evaluacion", back_populates="notas")

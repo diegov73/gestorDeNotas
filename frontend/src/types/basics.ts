@@ -1,23 +1,26 @@
 export interface Nota{
-    id?: number,
+    id_nota?: string,
     nombre: string,
     peso?: number,
-    nota: number,
-    fecha?: string
+    valor: number,
+    fecha?: string,
+    color?: string
 }
 
 export interface Evaluacion{
-    id?: number,
+    id_evaluacion?: string,
     nombre: string,
     peso: number,
-    cantidadNotas: number,
+    cantidad_notas: number,
+    color?: string,
     notas: Nota[]
 }
 
 export interface Ramo{
-    id?: number,
+    id_ramo?: string,
     nombre: string,
     nota_aprobado: number,
     nota_examen: number,
+    color?: string,
     evaluaciones: Evaluacion[]
 }

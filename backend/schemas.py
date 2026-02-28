@@ -7,13 +7,15 @@ class NotaBase(BaseModel):
     nombre: str
     valor: float
     fecha: Optional[date] = None
+    peso: Optional[float] = None
+    color: Optional[str] = "#24731d"
 
 class NotaCreate(NotaBase):
-    id_evaluacion: int
+    pass
 
 class NotaResponse(NotaBase):
-    id_nota: int
-    id_evaluacion: int
+    id_nota: str
+    id_evaluacion: str
 
     class Config:
         from_attributes = True
@@ -22,14 +24,17 @@ class NotaResponse(NotaBase):
 class EvaluacionBase(BaseModel):
     nombre: str
     peso: float
+    cantidad_notas: int
+    color: Optional[str] = "#24731d"
 
 class EvaluacionCreate(EvaluacionBase):
-    id_ramo: int
+    pass
 
 class EvaluacionResponse(EvaluacionBase):
-    id_evaluacion: int
-    id_ramo: int
+    id_evaluacion: str
+    id_ramo: str
     notas: List[NotaResponse] = []
+    
     class Config:
         from_attributes = True
 
@@ -38,6 +43,7 @@ class RamoBase(BaseModel):
     nombre: str
     nota_aprobado: float = 4.0
     nota_examen: float = 5.0
+    color: Optional[str] = "#24731d"
     
 class RamoCreate(RamoBase):
     pass
@@ -46,7 +52,8 @@ class RamoUpdate(BaseModel):
     nombre: Optional[str] = None
 
 class RamoResponse(RamoBase):
-    id_ramo: int
+    id_ramo: str
     evaluaciones: List[EvaluacionResponse] = []
+    
     class Config:
         from_attributes = True

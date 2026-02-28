@@ -1,0 +1,26 @@
+# --- Node / React (Frontend & Root) ---
+node_modules/
+dist/
+dist-ssr/
+*.local
+.env
+.env.*
+!.env.example
+
+# --- Python (Backend) ---
+backend/venv/
+backend/__pycache__/
+backend/*.py[cod]
+backend/instance/
+backend/.pytest_cache/
+
+# --- IDEs & OS ---
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+*.log
+
+# --- Build Tools ---
+out/
+build/

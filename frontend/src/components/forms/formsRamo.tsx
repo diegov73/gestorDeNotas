@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
-import type {Ramo} from "../types/basics";
-import { CallStatus } from "../enums/estados";
+import type {Ramo} from "../../types/basics";
+import { CallStatus } from "../../enums/estados";
+import { useRamos } from "../../context/ramosContext";
 
 interface closeWindow{
     onClose: () => void;
@@ -8,9 +9,9 @@ interface closeWindow{
 
 const FloatwindowRamo: React.FC<closeWindow> =({onClose})=>{
 
-    const API = "api/ramos/";
-
     const[estado, setEstado] = useState<CallStatus>(CallStatus.IDLE);
+
+    const {postRamo: createRamo} = useRamos();
 
     const[input, setInput] = useState({
         nombre: "",
@@ -45,7 +46,7 @@ const FloatwindowRamo: React.FC<closeWindow> =({onClose})=>{
         })
     }
 
-    const exportarRamo = async()=>{
+    const exportRamo = async()=>{
         
         
         if(input.nombre == ""){
@@ -53,28 +54,25 @@ const FloatwindowRamo: React.FC<closeWindow> =({onClose})=>{
             return
         }
         
-        const exportRamo:Ramo ={
+        const newRamo: Omit<Ramo, 'id'> ={
             ...input,
             nota_aprobado: input.notaAprobado ?? 4,
             nota_examen: input.notaExamen ?? 5
         }
 
-        console.log("Formulario recibido, interfaz cumplida:", exportRamo);
+        console.log("Formulario recibido, interfaz cumplida:", newRamo);
 
         try{
 
             setEstado(CallStatus.LOADING);
 
-            const post = await fetch(`${API}`,{
-                method: "POST",
-                headers: {"content-type": "application/json"},
-                body: JSON.stringify(exportRamo)
-            })
+            const post = await createRamo(newRamo);
         
-            if(post.ok){
+            if(post){
                 console.log("Ramo enviado exitosamente")
                 setEstado(CallStatus.SUCCES);
             }
+
             else{
                 console.log("Ramo enviado fallidamente")
                 setEstado(CallStatus.ERROR);
@@ -112,8 +110,8 @@ const FloatwindowRamo: React.FC<closeWindow> =({onClose})=>{
     }
 
     return(
-        <div className="fixed inset-0 flex items-top justify-end p-8 py-26">
-            <div className="relative bg-white rounded-lg overflow-hidden flex flex-col w-80 h-90 z-30 shadow-xl">
+        <div className="fixed inset-0 flex items-top justify-end p-8 py-26 z-999 bg-black/20 backdrop-blur-sm">
+            <div className="relative bg-white rounded-lg overflow-hidden flex flex-col w-80 h-100 shadow-xl">
 
                 <h1 className="flex items-center justify-center h-16 bg-green-600 text-white text-2xl z-20">Crear ramo</h1>
 
@@ -167,7 +165,7 @@ const FloatwindowRamo: React.FC<closeWindow> =({onClose})=>{
                     
                     <span 
                         className="h-12 w-40 flex justify-center items-center text-white absolute bottom-0 right-0 font-bold bg-blue-600 hover:text-black transition-colors duration-500"
-                        onClick={exportarRamo}>
+                        onClick={exportRamo}>
                         Crear
                     </span>
                 
