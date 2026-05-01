@@ -9,7 +9,8 @@ dist-ssr/
 
 # --- Python (Backend) ---
 backend/venv/
-backend/__pycache__/
+backend/__pycache__/*
+backend/routers/__pycache__/*
 backend/*.py[cod]
 backend/instance/
 backend/.pytest_cache/
