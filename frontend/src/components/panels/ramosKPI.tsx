@@ -13,8 +13,6 @@ import {
   Pie,
   ResponsiveContainer, 
   Cell,
-  ReferenceLine,
-  ReferenceArea,
   LabelList,
   PieChart
 } from 'recharts';
